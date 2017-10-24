@@ -1,10 +1,12 @@
 package top.cmoon.springcloud.practice.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import top.cmoon.springcloud.practice.model.User;
+import top.cmoon.springcloud.practice.service.LoginService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,17 +18,11 @@ import java.util.Map;
 public class LoginController {
 
     @Autowired
-    private RestTemplate restTemplate;
+    LoginService loginService;
 
     @GetMapping("/login")
     public User login() {
-
-        Map<String, String> params = new HashMap<>();
-        params.put("username", "admin");
-        params.put("password", "admin");
-
-        return restTemplate.getForObject(
-                "http://user-service/auth?username={username}&password={password}", User.class, params);
+        return loginService.login();
     }
 
 }

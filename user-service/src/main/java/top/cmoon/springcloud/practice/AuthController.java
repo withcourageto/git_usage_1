@@ -1,15 +1,21 @@
 package top.cmoon.springcloud.practice;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.cmoon.springcloud.practice.model.User;
+
+import java.util.Random;
 
 /**
  * Created by cool_moon on 2017/10/12.
  */
 @RestController
 public class AuthController {
+
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 
     class ReturnInfo {
@@ -42,6 +48,15 @@ public class AuthController {
     @GetMapping("/auth")
     public Object auth(@RequestParam("username") String principal,
                        @RequestParam("password") String credentials) {
+
+        int sleepTime = new Random().nextInt(3000);
+
+        logger.info("sleep time: {}ms", sleepTime);
+        try {
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         if (principal.equals("admin") && credentials.equals("admin")) {
             User user = new User();
